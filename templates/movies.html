@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+
+    {% for movie in movie_list %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ movie['image'] }}"
+             class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ movie['name'] }}</h5>
+            <h6 class="card-title">{{ movie['genre'] }}</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="/movie/{{ movie['id'] }}" class="btn btn-primary">Movie Details >></a>
+            {% if role == 'admin' %}
+                <button class="btn btn-danger">Delete Movie</button>
+            {% elif role == 'moderator' %}
+                <button class="btn btn-info">Add info</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

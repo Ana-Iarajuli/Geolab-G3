@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    {{ profile_id }}
+    <div class="mb-3 row">
+        <h5>{{ profile['name'] }}</h5>
+    </div>
+    <div class="mb-3 row">
+        <h5>{{ profile['surname'] }}</h5>
+    </div>
+    <div class="mb-3 row">
+        <img src="/static/images/{{ profile['image'] }}" alt="profile-photo">
+    </div>
+</div>
+{% endblock %}

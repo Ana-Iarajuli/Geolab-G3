@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title%} Registration Page {% endblock %}
+
+{% block content %}
+<div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+    </div>
+</div>
+<div class="mb-3 row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+        <input type="password" class="form-control" id="inputPassword">
+    </div>
+</div>
+<div class="mb-3 row">
+    <label for="confirm" class="col-sm-2 col-form-label">Confirm Password</label>
+    <div class="col-sm-10">
+        <input type="password" class="form-control" id="confirm" placeholder="confirm password">
+    </div>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-lg btn-purple">Registration</button>
+    <button type="button" class="btn btn-secondary btn-lg">Cancel</button>
+</div>
+
+{% endblock %}
