@@ -3,27 +3,46 @@
 {% block title%} Registration Page {% endblock %}
 
 {% block content %}
-<div class="mb-3 row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-    <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+<form class="m-5" method="post" enctype="multipart/form-data">
+    {% for errors in form.errors.values() %}
+    {% for error in errors %}
+    <div class="alert alert-danger">
+        {{ error }}
     </div>
-</div>
-<div class="mb-3 row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-    <div class="col-sm-10">
-        <input type="password" class="form-control" id="inputPassword">
-    </div>
-</div>
-<div class="mb-3 row">
-    <label for="confirm" class="col-sm-2 col-form-label">Confirm Password</label>
-    <div class="col-sm-10">
-        <input type="password" class="form-control" id="confirm" placeholder="confirm password">
-    </div>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-lg btn-purple">Registration</button>
-    <button type="button" class="btn btn-secondary btn-lg">Cancel</button>
-</div>
+    {% endfor %}
+    {% endfor %}
 
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3 row">
+        {{ form.image.label }}
+        {{ form.image(class="form-control", accepts=[".png", ".jpg", ".jpeg"]) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.username(class="form-control", placeholder=form.username.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.password(class="form-control", placeholder=form.password.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.confirm_password(class="form-control", placeholder=form.confirm_password.label.text) }}
+    </div>
+
+    <div class="mb-3 row">
+        {{ form.birthdate(class="form-control", placeholder=form.birthdate.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.mobile_number(class="form-control", placeholder=form.mobile_number.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.gender.label }}
+        {{ form.gender(class="form-control") }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.country(class="form-control", placeholder=form.country.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.register_button(class="btn btn-primary", placeholder=form.register_button.label.text) }}
+    </div>
+</form>
 {% endblock %}

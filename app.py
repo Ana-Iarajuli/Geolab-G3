@@ -1,11 +1,11 @@
 from flask import Flask, render_template
+from forms import RegisterForm
+from os import path #operation system
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "123"
 
-profiles = [
-    {"name": "Jasurbeki", "surname": "Iaxshiboevi", "image": "cat.jpg"},
-    {"name": "Iago", "surname": "Xvichia", "image": "cat2.jpg"}
-]
+profiles = []
 
 movie_list = [
     {"id": 0,
@@ -29,16 +29,30 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user = {
+            "username": form.username.data,
+            "gender": form.gender.data,
+            "country": form.country.data
+        }
+        print("--------------------------")
+        image = form.image.data
+        # directory = path.join(app.root_path, "static", "images", image.filename)
+        image.save(f"{app.root_path}\\static\\images\\{image.filename}")
+        new_user["profile_image"] = image.filename
+        profiles.append(new_user)
+        print(profiles)
+    # print(form.errors)
+    # print(form.username.data, form.password.data)
+    return render_template("register.html", form=form)
 
 
 @app.route("/profile/<int:profile_id>")
 def profile(profile_id):
-    if profile_id == 1:
-        return render_template("profile.html", profile_id=profile_id, profile=profiles[0])
-    return render_template("profile.html", profile_id=profile_id, profile=profiles[1])
+    return render_template("profile.html", profile=profiles[profile_id])
 
 
 @app.route("/movies")
