@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="card" style="width: 18rem;">
-        <img src="{{ movie['image'] }}"
+        <img src="/static/images/{{ movie['image'] }}"
              class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">{{ movie['name'] }}</h5>
-            <h6 class="card-title">{{ movie['genre'] }}</h6>
+            <h6 class="card-title">{{ movie['release_year'] }}</h6>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
                 content.</p>
         </div>

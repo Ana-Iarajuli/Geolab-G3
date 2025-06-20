@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title%} Add New Movie Page {% endblock %}
+
+{% block content %}
+<form class="m-5" method="post" enctype="multipart/form-data">
+    {% for errors in form.errors.values() %}
+    {% for error in errors %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3 row">
+        {{ form.image.label }}
+        {{ form.image(class="form-control", accepts=[".png", ".jpg", ".jpeg"]) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.name(class="form-control", placeholder=form.name.label.text) }}
+    </div>
+    <div class="mb-3 row">
+        {{ form.release_year(class="form-control", placeholder=form.release_year.label.text) }}
+    </div>
+
+    <div class="mb-3 row">
+        {{ form.button(class="btn btn-primary", placeholder=form.button.label.text) }}
+    </div>
+</form>
+{% endblock %}

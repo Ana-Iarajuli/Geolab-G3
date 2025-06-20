@@ -21,3 +21,11 @@ class RegisterForm(FlaskForm):
     country = SelectField(choices=["ვისი გორისა ხარ?", "საქართველო", "იაპონია", "ზიმბაბვე"], validators=[DataRequired()])
 
     register_button = SubmitField()
+
+
+class MovieForm(FlaskForm):
+    name = StringField("შეიყვანე ფილმის სახელი")
+    release_year = IntegerField("შეიყვანე გამოშვების წელი")
+    image = FileField("ატვირთე ფილმის ფოტო")
+
+    button = SubmitField("დაამატე ფილმი")
