@@ -20,12 +20,9 @@
     <div class="mb-3 row">
         {{ form.password(class="form-control", placeholder=form.password.label.text) }}
     </div>
-    <div class="mb-3 row">
-        {{ form.confirm_password(class="form-control", placeholder=form.confirm_password.label.text) }}
-    </div>
 
     <div class="mb-3 row">
-        {{ form.register_button(class="btn btn-primary", placeholder=form.register_button.label.text) }}
+        {{ form.login_button(class="btn btn-primary", placeholder=form.login_button.label.text) }}
     </div>
 </form>
 {% endblock %}

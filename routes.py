@@ -1,54 +1,45 @@
-from flask import render_template, redirect
-from forms import RegisterForm, MovieForm
-from ext import app, db
-from models import Movie
-from os import path #operation system
-
-
-profiles = []
+from flask import render_template, redirect, flash
+from forms import RegisterForm, LoginForm, MovieForm
+from ext import app, db, login_manager
+from models import Movie, User
+from os import path
+from flask_login import login_user, logout_user, login_required
 
 
 @app.route("/")
 def home():
-    return render_template("index.html")
-
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
+    movie_list = Movie.query.all()
+    return render_template("index.html", movie_list=movie_list)
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        new_user = {
-            "username": form.username.data,
-            "gender": form.gender.data,
-            "country": form.country.data
-        }
-        print("--------------------------")
-        image = form.image.data
-        # directory = path.join(app.root_path, "static", "images", image.filename)
-        image.save(f"{app.root_path}\\static\\images\\{image.filename}")
-        new_user["profile_image"] = image.filename
-        profiles.append(new_user)
-        print(profiles)
-    # print(form.errors)
-    # print(form.username.data, form.password.data)
+        new_user = User(username=form.username.data, password=form.password.data)
+        new_user.create()
+        return redirect("/")
+
     return render_template("register.html", form=form)
 
 
-@app.route("/profile/<int:profile_id>")
-def profile(profile_id):
-    return render_template("profile.html", profile=profiles[profile_id])
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter(form.username.data == User.username).first()
+        check_pass = user.check_password(form.password.data)
+        if user and check_pass:
+            login_user(user)
+            flash("წარმატებით გაიარე ავტორიზაცია")
+            return redirect("/")
+    return render_template("login.html", form=form)
 
 
-@app.route("/movies")
-def movies():
-    movie_list = Movie.query.all()
-    return render_template("movies.html", movie_list=movie_list, role="admin")
-
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/")
 
 @app.route("/movie/<int:movie_id>")
 def movie_details(movie_id):
@@ -57,6 +48,7 @@ def movie_details(movie_id):
 
 
 @app.route("/add_movie", methods=["GET", "POST"])
+@login_required
 def add_movie():
     form = MovieForm()
     if form.validate_on_submit():
@@ -67,15 +59,16 @@ def add_movie():
         new_movie.image = image.filename
 
         #add to database
-        Movie.add(new_movie)
+        new_movie.create()
 
-        return redirect("/movies")
+        return redirect("/")
 
 
     return render_template("add_movie.html", form=form)
 
 
 @app.route("/edit_movie/<int:movie_id>", methods=["GET", "POST"])
+@login_required
 def edit_movie(movie_id):
     movie = Movie.query.get(movie_id)
     form = MovieForm(name=movie.name, release_year=movie.release_year, image=movie.image)
@@ -89,16 +82,17 @@ def edit_movie(movie_id):
         image.save(directory)
         movie.image = image.filename
 
-        Movie.save()
+        movie.save()
 
-        return redirect("/movies")
+        return redirect("/")
 
     return render_template("edit_movie.html", form=form)
 
 
 @app.route("/delete_movie/<int:movie_id>")
+@login_required
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)
-    Movie.delete(movie)
+    movie.delete()
 
-    return redirect("/movies")
+    return redirect("/")
